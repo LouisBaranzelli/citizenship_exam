@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 public class Question {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -15,11 +16,18 @@ public class Question {
     Theme theme;
     Level level;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
+    public Question(){}
+
+    public Question(Theme theme, Level level){
+        this.theme = theme;
+        this.level = level;
+    }
+
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionTranslation> questionTranslations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
-    private List<AnswerTranslation> answerTranslations = new ArrayList<>();
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Answer> answers = new ArrayList<>();
 
     public void setId(Long id) {
         this.id = id;
@@ -33,8 +41,8 @@ public class Question {
         return questionTranslations;
     }
 
-    public List<AnswerTranslation> getAnswerTranslations() {
-        return answerTranslations;
+    public List<Answer> getAnswers() {
+        return answers;
     }
 
     public void setTheme(Theme theme) {
@@ -43,5 +51,13 @@ public class Question {
 
     public void setLevel(Level level) {
         this.level = level;
+    }
+
+    public Theme getTheme() {
+        return theme;
+    }
+
+    public Level getLevel() {
+        return level;
     }
 }

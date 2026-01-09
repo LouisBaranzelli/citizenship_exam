@@ -2,29 +2,32 @@ package org.example.examen_citoyennete.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 public class AnswerTranslation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Language language;
+
     public void setId(Long id) {
         this.id = id;
     }
 
+
     @ManyToOne
-    @JoinColumn(name="QUESTION_ID")
-    private Question question;
+    @JoinColumn(name = "answer_id")
+    Answer answer;
 
     public Long getId() {
         return id;
     }
 
-    public void setQuestion(Question question) {
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
+    }
 
-        this.question = question;
+    public Language language() {
+        return language;
     }
 }

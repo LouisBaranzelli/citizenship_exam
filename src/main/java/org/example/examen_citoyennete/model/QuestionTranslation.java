@@ -15,6 +15,8 @@ public class QuestionTranslation {
     @JoinColumn(name = "QUESTION_ID")
     private Question question;
 
+    private Language language;
+
 
     public void setId(Long id) {
         this.id = id;
@@ -38,5 +40,13 @@ public class QuestionTranslation {
 
     public void setQuestion(Question question) {
         this.question = question;
+    }
+
+    public Language language() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 }

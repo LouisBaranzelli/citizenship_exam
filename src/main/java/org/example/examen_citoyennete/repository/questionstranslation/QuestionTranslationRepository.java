@@ -1,4 +1,4 @@
-package org.example.examen_citoyennete.repository;
+package org.example.examen_citoyennete.repository.questionstranslation;
 
 import org.example.examen_citoyennete.model.QuestionTranslation;
 import org.springframework.data.jpa.repository.JpaRepository;
