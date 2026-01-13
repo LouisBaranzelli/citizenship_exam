@@ -1,6 +1,8 @@
 package org.example.examen_citoyennete.model;
 
 import jakarta.persistence.*;
+import org.example.examen_citoyennete.controller.QuestionNotFoundException;
+import org.example.examen_citoyennete.controller.dto.QuestionDto;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -17,6 +19,12 @@ public class Question {
     Level level;
 
     public Question(){}
+
+    public Question(Theme theme, Level level, Long id){
+        this(theme, level);
+        this.id = id;
+    }
+
 
     public Question(Theme theme, Level level){
         this.theme = theme;

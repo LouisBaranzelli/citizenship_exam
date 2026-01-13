@@ -1,30 +1,32 @@
 package org.example.examen_citoyennete.repository.answer;
 
 import org.example.examen_citoyennete.model.*;
+import org.example.examen_citoyennete.repository.question.MockedQuestionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
+@Repository
 public class MockedAnwserRepository implements IAnswerRepository{
 
-    private List<Question> questions = new ArrayList<>();
-
-    MockedAnwserRepository(){
-        questions.add(new Question(Theme.THEME1, Level.LEVEL0));
-        questions.add(new Question(Theme.THEME1, Level.LEVEL0));
-        questions.add(new Question(Theme.THEME1, Level.LEVEL0));
-        questions.add(new Question(Theme.THEME2, Level.LEVEL0));
-        questions.add(new Question(Theme.THEME2, Level.LEVEL1));
-    }
+    @Autowired
+    MockedQuestionRepository mockedQuestionRepository;
 
     @Override
     public List<Answer> findByQuestion(Question question) {
-        return questions.stream()
-                .filter(q -> q.getId().equals(question.getId()))
-                .findFirst()
+        return mockedQuestionRepository.findById(question.getId())
                 .map(Question::getAnswers)
                 .orElse(List.of());
+    }
+
+    @Override
+    public Answer findById(Long id) {
+        return mockedQuestionRepository.findAll().stream()
+                .flatMap(q -> q.getAnswers().stream())
+                .toList()
+                .stream()
+                .filter(a -> a.getId().equals(id))
+                .findFirst().orElse(null);
     }
 }

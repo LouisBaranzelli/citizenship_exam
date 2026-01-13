@@ -2,6 +2,7 @@ package org.example.examen_citoyennete.model;
 
 
 import jakarta.persistence.*;
+import org.example.examen_citoyennete.controller.dto.QuestionDto;
 
 @Entity
 public class QuestionTranslation {
@@ -16,6 +17,15 @@ public class QuestionTranslation {
     private Question question;
 
     private Language language;
+
+    public QuestionTranslation(Language language, String labelQuestion, Long id, Question question){
+        this.language = language;
+        this.labelQuestion = labelQuestion;
+        this.id = id;
+        this.question = question;
+    }
+
+    public QuestionTranslation(){};
 
 
     public void setId(Long id) {
@@ -49,4 +59,5 @@ public class QuestionTranslation {
     public void setLanguage(Language language) {
         this.language = language;
     }
+
 }

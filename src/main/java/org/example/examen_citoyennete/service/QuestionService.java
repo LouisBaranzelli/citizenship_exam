@@ -1,30 +1,102 @@
 package org.example.examen_citoyennete.service;
 
+import org.example.examen_citoyennete.controller.QuestionNotFoundException;
+import org.example.examen_citoyennete.controller.dto.AnswerDto;
+import org.example.examen_citoyennete.controller.dto.QuestionDto;
 import org.example.examen_citoyennete.model.*;
+import org.example.examen_citoyennete.repository.answer.IAnswerRepository;
+import org.example.examen_citoyennete.repository.answertranslation.IAnswerTranslation;
 import org.example.examen_citoyennete.repository.question.IQuestionRepository;
+import org.example.examen_citoyennete.repository.questionstranslation.IQuestionTranslationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+import java.util.Objects;
+
 
 @Service
 public class QuestionService {
 
-    IQuestionRepository repository;
+    private static Logger logger = LoggerFactory.getLogger(QuestionService.class);
 
-    public QuestionService(IQuestionRepository questionRepository){
-        this.repository = questionRepository;
+    private final IQuestionRepository questionRepository;
+
+    private final IAnswerRepository answerRepository;
+
+    private final IQuestionTranslationRepository questionTranslationRepository;
+
+    private final IAnswerTranslation answerTranslationRepository;
+
+
+    public QuestionService(IQuestionRepository questionRepository, IQuestionTranslationRepository questionTranslationRepository, IAnswerRepository answerRepository, IAnswerTranslation answerTranslationRepository){
+        this.questionRepository = questionRepository;
+        this.questionTranslationRepository = questionTranslationRepository;
+        this.answerRepository = answerRepository;
+        this.answerTranslationRepository = answerTranslationRepository;
     }
 
-    public Question getRandomQuestion(Level level, Theme theme){
-       List<Question> questions = repository.findByThemeAndLevel(theme, level).orElse(Collections.emptyList());
+    public Question getRandomQuestion(Level level, Theme theme, Language language) throws QuestionNotFoundException {
+       List<Question> questions = questionRepository.findByThemeAndLevel(theme, level).orElse(Collections.emptyList());
        if (questions.isEmpty()){
-           return null;
+           logger.warn("not available questions for {}/{}", theme,level);
+           throw new QuestionNotFoundException("not available questions");
        }
-        Random random = new Random();
-        return questions.get(random.nextInt(questions.size()));
+        Collections.shuffle(questions);
+
+       Question output = questions.stream().filter(question -> {
+           return hasTranslation(question, language);
+        }).findFirst().orElse(null);
+
+        if (output == null) {
+            logger.warn("not available language ({}) for questions relative to {}/{}",language, theme, level);
+            throw new QuestionNotFoundException("language not found");
+        }
+        return output;
+    }
+
+    public boolean hasTranslation(Question question, Language language)  {
+
+        if (question == null || language == null){
+            logger.error("question or language null");
+            return false;
+        }
+
+        QuestionTranslation questionTranslation = question.getQuestionTranslations().stream()
+                .filter(q -> q.language().equals(language))
+                .findFirst().orElse(null);
+        boolean hasTranslationQuestion = (questionTranslation != null);
+        if (!hasTranslationQuestion){
+            return false;
+        }
+        List<Answer> answers  = question.getAnswers();
+        return answers.stream().allMatch(a -> {
+           AnswerTranslation t = a.getAnswersTranslations().stream()
+                   .filter(l -> l.language().equals(language))
+                   .findFirst().orElse(null);
+            return t != null;
+        });
+    }
+
+    public QuestionDto getDto(Question question, Language language){
+        List<Answer> answers = answerRepository.findByQuestion(question);
+        QuestionTranslation questionTranslation = question.getQuestionTranslations().stream()
+                .filter(q -> q.language().equals(language))
+                .findFirst().orElseThrow();
+
+        List<AnswerTranslation> answerTranslations = answers.stream()
+                .map(a -> a.getAnswersTranslations().stream()
+                        .filter(t -> t.language().equals(language))
+                        .findFirst()
+                        .orElseThrow()
+                )
+                .toList();
+
+        List<AnswerDto> answersDto = answerTranslations.stream().map(answerTranslation ->
+                new AnswerDto(answerTranslation.getId(), answerTranslation.getLabelAnswer(), language.name())).toList();
+        return new QuestionDto(question.getId(), questionTranslation.getLabelQuestion(), question.getTheme().name(), question.getLevel().name(), questionTranslation.language().name(), answersDto);
     }
 
 

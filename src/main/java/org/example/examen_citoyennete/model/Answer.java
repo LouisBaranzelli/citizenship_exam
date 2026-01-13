@@ -15,9 +15,10 @@ public class Answer {
 
     public Answer() {}
 
-   public Answer(Question question, boolean isCorrect){
+   public Answer(Question question, boolean isCorrect, Long id){
        this.question = question;
        this.isCorrect = isCorrect;
+       this.id = id;
    }
 
     @ManyToOne
@@ -46,4 +47,6 @@ public class Answer {
     public List<AnswerTranslation> getAnswersTranslations() {
         return answersTranslations;
     }
+
+
 }

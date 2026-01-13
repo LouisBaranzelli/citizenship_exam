@@ -1,5 +1,7 @@
 package org.example.examen_citoyennete.service;
 
+import org.example.examen_citoyennete.controller.QuestionNotFoundException;
+import org.example.examen_citoyennete.model.Language;
 import org.example.examen_citoyennete.model.Level;
 import org.example.examen_citoyennete.model.Theme;
 import org.junit.jupiter.api.Test;
@@ -15,7 +17,7 @@ class QuestionServiceTest {
     QuestionService questionService;
 
     @Test
-    public void test(){
-        assertNotNull(questionService.getRandomQuestion(Level.LEVEL1, Theme.THEME2));
+    public void test() throws QuestionNotFoundException {
+        assertNotNull(questionService.getRandomQuestion(Level.LEVEL1, Theme.THEME2, Language.FR));
     }
 }

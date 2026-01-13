@@ -1,0 +1,56 @@
+package org.example.examen_citoyennete.controller;
+
+import org.example.examen_citoyennete.controller.dto.QuestionDto;
+import org.example.examen_citoyennete.model.Answer;
+import org.example.examen_citoyennete.model.AnswerTranslation;
+import org.example.examen_citoyennete.model.Language;
+import org.example.examen_citoyennete.repository.question.MockedQuestionRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import tools.jackson.databind.ObjectMapper;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class QuestionControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    MockedQuestionRepository mockedQuestionRepository;
+
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    @Test
+    void testGetRandomQuestion() throws Exception {
+        MvcResult mvcResult  = mockMvc.perform(MockMvcRequestBuilders.get("/questions/FR/THEME1/LEVEL0"))
+                .andExpect(status().isOk()).andReturn();
+        String jsonAnswer = mvcResult.getResponse().getContentAsString();
+        QuestionDto questionDto = mapper.readValue(jsonAnswer, QuestionDto.class);
+        assertNotEquals(null, questionDto);
+        assertEquals(2, questionDto.getAnswers().size());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/questions/EN/THEME1/LEVEL0"))
+                .andExpect(status().isNotFound());
+
+        Answer missinAnswerTranslation =  mockedQuestionRepository.findById(questionDto.getId()).get().getAnswers().stream().filter(a -> a.getAnswersTranslations().size() == 1).findFirst().orElse(null);
+        missinAnswerTranslation.getAnswersTranslations().add(new AnswerTranslation(Language.EN, missinAnswerTranslation, "I am 30", 10L));
+        mockMvc.perform(MockMvcRequestBuilders.get("/questions/EN/THEME1/LEVEL0"))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/questions/FR/THEME1/LEVEL3"))
+                .andExpect(status().isNotFound());
+
+
+    }
+
+}

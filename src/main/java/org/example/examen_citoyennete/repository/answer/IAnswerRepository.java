@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IAnswerRepository {
+
     List<Answer> findByQuestion(Question question);
 
+    Answer findById(Long id);
 }

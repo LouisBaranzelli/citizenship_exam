@@ -13,23 +13,13 @@ import java.util.Optional;
 @Repository
 public class MockedQuestionTranslationRepository implements IQuestionTranslationRepository{
 
-    List<Question> questionRepository = new ArrayList<>();
-
-    MockedQuestionTranslationRepository(){
-
-        questionRepository.add(new Question(Theme.THEME1, Level.LEVEL0));
-        questionRepository.add(new Question(Theme.THEME1, Level.LEVEL0));
-        questionRepository.add(new Question(Theme.THEME1, Level.LEVEL0));
-        questionRepository.add(new Question(Theme.THEME2, Level.LEVEL0));
-        questionRepository.add(new Question(Theme.THEME2, Level.LEVEL1));
-    }
-
+    @Autowired
+    MockedQuestionRepository mockedQuestionRepository;
 
     @Override
     public QuestionTranslation findByQuestionAndLanguage(Question question, Language language) {
-        Optional<Question> requestQuestion =  questionRepository.stream().filter(q -> q.getId().equals(question.getId())).findFirst();
+        Optional<Question> requestQuestion =  mockedQuestionRepository.findById(question.getId());
         return requestQuestion.flatMap(value -> value.getQuestionTranslations().stream().filter(q -> q.language().equals(language)).findFirst()).orElse(null);
     }
-
 
 }

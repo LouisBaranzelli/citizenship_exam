@@ -10,8 +10,20 @@ public class AnswerTranslation {
 
     private Language language;
 
+    private String labelAnswer;
+
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public AnswerTranslation(Language language, Answer answer, String labelAnswer, Long id){
+        this.language = language;
+        this.answer = answer;
+        this.labelAnswer = labelAnswer;
+        this.id = id;
+    }
+
+    public AnswerTranslation(){
     }
 
 
@@ -29,5 +41,9 @@ public class AnswerTranslation {
 
     public Language language() {
         return language;
+    }
+
+    public String getLabelAnswer() {
+        return labelAnswer;
     }
 }
