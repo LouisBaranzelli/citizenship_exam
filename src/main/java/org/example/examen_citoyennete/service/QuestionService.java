@@ -38,8 +38,26 @@ public class QuestionService {
         this.answerTranslationRepository = answerTranslationRepository;
     }
 
+    public Question getQuestion(Long id, Language language) throws QuestionNotFoundException {
+        Question question = questionRepository.findById(id).orElse(null);
+        if (question == null) {
+            logger.warn("not available question for id: {}", id);
+            throw new QuestionNotFoundException("ID not found: " + id);
+        }
+
+        if (!hasTranslation(question, language)){
+            logger.warn("not available language ({}) question for id: {}",language, id);
+            throw new QuestionNotFoundException("language " + language + " not found for id: " + id);
+        }
+        return question;
+    }
+
     public Question getRandomQuestion(Level level, Theme theme, Language language) throws QuestionNotFoundException {
-       List<Question> questions = questionRepository.findByThemeAndLevel(theme, level).orElse(Collections.emptyList());
+       /*
+       Retourne d'une Question et non d'une QuestionTranslation pour avoir aussi les answers
+        */
+
+        List<Question> questions = questionRepository.findByThemeAndLevel(theme, level).orElse(Collections.emptyList());
        if (questions.isEmpty()){
            logger.warn("not available questions for {}/{}", theme,level);
            throw new QuestionNotFoundException("not available questions");
@@ -51,9 +69,10 @@ public class QuestionService {
         }).findFirst().orElse(null);
 
         if (output == null) {
-            logger.warn("not available language ({}) for questions relative to {}/{}",language, theme, level);
+            logger.warn("not available question ({}/{}) for language {}", theme, level, language);
             throw new QuestionNotFoundException("language not found");
         }
+
         return output;
     }
 

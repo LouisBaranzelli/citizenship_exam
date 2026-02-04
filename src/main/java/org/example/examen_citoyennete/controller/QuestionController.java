@@ -1,13 +1,9 @@
 package org.example.examen_citoyennete.controller;
 
 import org.example.examen_citoyennete.controller.dto.QuestionDto;
-import org.example.examen_citoyennete.model.Language;
-import org.example.examen_citoyennete.model.Level;
-import org.example.examen_citoyennete.model.Question;
-import org.example.examen_citoyennete.model.Theme;
+import org.example.examen_citoyennete.model.*;
 import org.example.examen_citoyennete.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +37,26 @@ public class QuestionController {
         Question question = null;
         try {
             question = questionService.getRandomQuestion(levelEnum, themeEnum, languageEnum);
+            return ResponseEntity.ok(questionService.getDto(question, languageEnum));
+
+        } catch (QuestionNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @GetMapping("/{language}/{id}")
+    public ResponseEntity<QuestionDto> getQuestion(@PathVariable String language, @PathVariable String id){
+        Language languageEnum;
+        Long idQuestion;
+        try {
+            languageEnum = Language.valueOf(language.toUpperCase());
+            idQuestion = Long.valueOf(id);
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(null);
+        }
+        Question question = null;
+        try {
+            question = questionService.getQuestion(idQuestion, languageEnum);
             return ResponseEntity.ok(questionService.getDto(question, languageEnum));
 
         } catch (QuestionNotFoundException e) {
