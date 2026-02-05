@@ -1,5 +1,5 @@
 package org.example.examen_citoyennete.model;
 
 public enum Level {
-    LEVEL0, LEVEL1, LEVEL3;
+    L1, L2, L3;
 }

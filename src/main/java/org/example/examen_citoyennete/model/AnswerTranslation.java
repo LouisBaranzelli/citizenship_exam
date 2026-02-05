@@ -46,4 +46,8 @@ public class AnswerTranslation {
     public String getLabelAnswer() {
         return labelAnswer;
     }
+
+    public Answer answer() {
+        return answer;
+    }
 }

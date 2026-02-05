@@ -30,7 +30,7 @@ class QuestionRepositoryTest {
     @Test
     @Transactional
     public void test(){
-        Question q1 = new Question(Theme.THEME1, Level.LEVEL0);
+        Question q1 = new Question(Theme.T1, Level.L1);
         repository.save(q1);
         List<Question> questionSaved = repository.findAll();
         assertEquals(1, questionSaved.size());

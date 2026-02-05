@@ -1,6 +1,6 @@
 package org.example.examen_citoyennete.model;
 
 public enum Theme {
-    THEME1, THEME2, THEME3
+    T1, T2, T3, T4, T5
 
 }

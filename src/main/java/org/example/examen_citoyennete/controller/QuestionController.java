@@ -6,21 +6,26 @@ import org.example.examen_citoyennete.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/questions")
+@CrossOrigin(origins = "http://localhost:4200")
 public class QuestionController {
 
     @Autowired
     QuestionService questionService;
 
-    @GetMapping("/{language}/{theme}/{level}")
+    @GetMapping("/test")
+    public ResponseEntity<Map<String, String>> test(){
+        return ResponseEntity.ok(Map.of("answer", "ok"));
+    }
+
+
+        @GetMapping("/{language}/{theme}/{level}")
     public ResponseEntity<QuestionDto> getRandomQuestion(@PathVariable String theme, @PathVariable String level, @PathVariable String language){
 
         Theme themeEnum;

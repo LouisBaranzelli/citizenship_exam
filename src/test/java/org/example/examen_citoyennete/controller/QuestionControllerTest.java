@@ -32,25 +32,24 @@ class QuestionControllerTest {
 
     @Test
     void testGetRandomQuestion() throws Exception {
-        MvcResult mvcResult  = mockMvc.perform(MockMvcRequestBuilders.get("/questions/FR/THEME1/LEVEL0"))
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/questions/FR/T1/L1"))
                 .andExpect(status().isOk()).andReturn();
         String jsonAnswer = mvcResult.getResponse().getContentAsString();
         QuestionDto questionDto = mapper.readValue(jsonAnswer, QuestionDto.class);
         assertNotEquals(null, questionDto);
         assertEquals(2, questionDto.getAnswers().size());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/questions/EN/THEME1/LEVEL0"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/questions/EN/T1/L1"))
                 .andExpect(status().isNotFound());
 
-        Answer missinAnswerTranslation =  mockedQuestionRepository.findById(questionDto.getId()).get().getAnswers().stream().filter(a -> a.getAnswersTranslations().size() == 1).findFirst().orElse(null);
+        Answer missinAnswerTranslation = mockedQuestionRepository.findById(questionDto.getId()).get().getAnswers().stream().filter(a -> a.getAnswersTranslations().size() == 1).findFirst().orElse(null);
         missinAnswerTranslation.getAnswersTranslations().add(new AnswerTranslation(Language.EN, missinAnswerTranslation, "I am 30", 10L));
-        mockMvc.perform(MockMvcRequestBuilders.get("/questions/EN/THEME1/LEVEL0"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/questions/EN/T1/L1"))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/questions/FR/THEME1/LEVEL3"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/questions/FR/T1/L3"))
                 .andExpect(status().isNotFound());
 
 
     }
-
 }

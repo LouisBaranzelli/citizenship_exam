@@ -18,7 +18,7 @@ class QuestionServiceTest {
 
     @Test
     public void test() throws QuestionNotFoundException {
-        assertNotNull(questionService.getRandomQuestion(Level.LEVEL1, Theme.THEME2, Language.FR));
+        assertNotNull(questionService.getRandomQuestion(Level.L2, Theme.T2, Language.FR));
     }
 
     @Test

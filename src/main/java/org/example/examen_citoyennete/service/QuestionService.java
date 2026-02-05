@@ -114,9 +114,8 @@ public class QuestionService {
                 .toList();
 
         List<AnswerDto> answersDto = answerTranslations.stream().map(answerTranslation ->
-                new AnswerDto(answerTranslation.getId(), answerTranslation.getLabelAnswer(), language.name())).toList();
+                new AnswerDto(answerTranslation.getId(), answerTranslation.getLabelAnswer(), language.name(), answerTranslation.answer().isCorrect())).toList();
         return new QuestionDto(question.getId(), questionTranslation.getLabelQuestion(), question.getTheme().name(), question.getLevel().name(), questionTranslation.language().name(), answersDto);
     }
-
 
 }

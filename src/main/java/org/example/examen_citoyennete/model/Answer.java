@@ -48,5 +48,7 @@ public class Answer {
         return answersTranslations;
     }
 
-
+    public boolean isCorrect() {
+        return isCorrect;
+    }
 }

@@ -18,24 +18,24 @@ public class MockedQuestionRepository implements IQuestionRepository {
 
 
     MockedQuestionRepository(){
-        Question question1 = new Question(Theme.THEME1, Level.LEVEL0, 0L);
+        Question question1 = new Question(Theme.T1, Level.L1, 0L);
         question1.getQuestionTranslations().add(new QuestionTranslation(Language.FR, "Quel age as-tu ?", 0L, question1));
-        question1.getQuestionTranslations().add(new QuestionTranslation(Language.EN, "How Old are you ?", 0L, question1));
+        question1.getQuestionTranslations().add(new QuestionTranslation(Language.EN, "How Old are you ?", 1L, question1));
 
         Answer answer1 = new Answer(question1, true, 0L);
-        answer1.getAnswersTranslations().add(new AnswerTranslation(Language.FR, answer1, "j'ai 34 ans", 0L));
-        answer1.getAnswersTranslations().add(new AnswerTranslation(Language.EN, answer1, "I am 34", 0L));
+        answer1.getAnswersTranslations().add(new AnswerTranslation(Language.FR, answer1, "j'ai 34 ans", 2L));
+        answer1.getAnswersTranslations().add(new AnswerTranslation(Language.EN, answer1, "I am 34", 3L));
 
         Answer answer2 = new Answer(question1, false, 0L);
-        answer2.getAnswersTranslations().add(new AnswerTranslation(Language.FR, answer1, "j'ai 30 ans", 0L));
+        answer2.getAnswersTranslations().add(new AnswerTranslation(Language.FR, answer1, "j'ai 30 ans", 4L));
 
         question1.getAnswers().addAll(List.of(answer1, answer2));
         questions.add(question1);
 
-        questions.add(new Question(Theme.THEME1, Level.LEVEL1, 1L));
-        questions.add(new Question(Theme.THEME1, Level.LEVEL1, 2L));
-        questions.add(new Question(Theme.THEME2, Level.LEVEL1, 3L));
-        questions.add(new Question(Theme.THEME2, Level.LEVEL1, 4L));
+        questions.add(new Question(Theme.T1, Level.L2, 1L));
+        questions.add(new Question(Theme.T1, Level.L2, 2L));
+        questions.add(new Question(Theme.T2, Level.L2, 3L));
+        questions.add(new Question(Theme.T2, Level.L2, 4L));
     }
 
     @Override
