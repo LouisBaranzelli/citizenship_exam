@@ -52,7 +52,7 @@ public class QuestionService {
         return question;
     }
 
-    public Question getRandomQuestion(Level level, Theme theme, Language language) throws QuestionNotFoundException {
+    public Question getRandomQuestion(Level level, Theme theme, Language language, List<Long> historicId) throws QuestionNotFoundException {
        /*
        Retourne d'une Question et non d'une QuestionTranslation pour avoir aussi les answers
         */
@@ -65,7 +65,7 @@ public class QuestionService {
         Collections.shuffle(questions);
 
        Question output = questions.stream().filter(question -> {
-           return hasTranslation(question, language);
+           return hasTranslation(question, language) && !historicId.contains(question.getId());
         }).findFirst().orElse(null);
 
         if (output == null) {

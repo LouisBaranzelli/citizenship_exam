@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/questions")
@@ -25,8 +25,8 @@ public class QuestionController {
     }
 
 
-        @GetMapping("/{language}/{theme}/{level}")
-    public ResponseEntity<QuestionDto> getRandomQuestion(@PathVariable String theme, @PathVariable String level, @PathVariable String language){
+        @PostMapping("/{language}/{theme}/{level}")
+    public ResponseEntity<QuestionDto> getRandomQuestion(@PathVariable String theme, @PathVariable String level, @PathVariable String language, @RequestBody List<Long> alreadyAsked){
 
         Theme themeEnum;
         Level levelEnum;
@@ -41,7 +41,7 @@ public class QuestionController {
         }
         Question question = null;
         try {
-            question = questionService.getRandomQuestion(levelEnum, themeEnum, languageEnum);
+            question = questionService.getRandomQuestion(levelEnum, themeEnum, languageEnum, alreadyAsked);
             return ResponseEntity.ok(questionService.getDto(question, languageEnum));
 
         } catch (QuestionNotFoundException e) {

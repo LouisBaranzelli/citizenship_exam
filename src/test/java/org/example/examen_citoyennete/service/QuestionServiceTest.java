@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -18,7 +21,9 @@ class QuestionServiceTest {
 
     @Test
     public void test() throws QuestionNotFoundException {
-        assertNotNull(questionService.getRandomQuestion(Level.L2, Theme.T2, Language.FR));
+        assertNotNull(questionService.getRandomQuestion(Level.L1, Theme.T1, Language.FR, Collections.emptyList()));
+        assertNotNull(questionService.getRandomQuestion(Level.L1, Theme.T1, Language.FR, List.of(1L)));
+        assertThrowsExactly(QuestionNotFoundException.class, () -> questionService.getRandomQuestion(Level.L1, Theme.T1, Language.FR, List.of(0L)));
     }
 
     @Test
