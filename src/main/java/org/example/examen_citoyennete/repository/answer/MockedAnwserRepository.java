@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MockedAnwserRepository implements IAnswerRepository{
@@ -21,12 +22,12 @@ public class MockedAnwserRepository implements IAnswerRepository{
     }
 
     @Override
-    public Answer findById(Long id) {
+    public Optional<Answer> findById(Long id) {
         return mockedQuestionRepository.findAll().stream()
                 .flatMap(q -> q.getAnswers().stream())
                 .toList()
                 .stream()
                 .filter(a -> a.getId().equals(id))
-                .findFirst().orElse(null);
+                .findFirst();
     }
 }

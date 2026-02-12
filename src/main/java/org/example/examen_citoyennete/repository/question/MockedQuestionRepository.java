@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 
 @Repository
-@Primary
 public class MockedQuestionRepository implements IQuestionRepository {
 
     private List<Question> questions = new ArrayList<>();
@@ -26,8 +25,9 @@ public class MockedQuestionRepository implements IQuestionRepository {
         answer1.getAnswersTranslations().add(new AnswerTranslation(Language.FR, answer1, "j'ai 34 ans", 2L));
         answer1.getAnswersTranslations().add(new AnswerTranslation(Language.EN, answer1, "I am 34", 3L));
 
-        Answer answer2 = new Answer(question1, false, 0L);
-        answer2.getAnswersTranslations().add(new AnswerTranslation(Language.FR, answer1, "j'ai 30 ans", 4L));
+        Answer answer2 = new Answer(question1, false, 1L);
+        answer2.getAnswersTranslations().add(new AnswerTranslation(Language.FR, answer2, "j'ai 30 ans", 4L));
+        answer2.getAnswersTranslations().add(new AnswerTranslation(Language.EN, answer2, "I am 30", 5L));
 
         question1.getAnswers().addAll(List.of(answer1, answer2));
         questions.add(question1);

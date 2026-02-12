@@ -1,0 +1,31 @@
+<configuration>
+
+    <!-- Appender console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d %-5level [%thread] %logger - %msg%n</pattern>
+        </encoder>
+        <!-- Filtre : n'accepte que INFO et plus -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!-- File appender qui peut garder le DEBUG -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>app.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Niveau global -->
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <file>app.log</file>
+
+</configuration>

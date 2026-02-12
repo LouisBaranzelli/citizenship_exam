@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +27,10 @@ public class MockedAnswerTranslationRepository implements IAnswerTranslation {
     @Override
     public AnswerTranslation findByAnswerAndLanguage(Answer answer, Language language) {
 
-        Answer requestAnswer = mockedAnwserRepository.findById(answer.getId());
-
-        return requestAnswer.getAnswersTranslations().stream()
-                .filter(a -> a.language().equals(language))
-                .findFirst().orElse(null);
+        Optional<Answer> requestAnswer = mockedAnwserRepository.findById(answer.getId());
+        AnswerTranslation output;
+        return requestAnswer.flatMap(a -> a.getAnswersTranslations().stream()
+                .filter(t -> t.language().equals(language))
+                .findFirst()).orElse(null);
     }
 }

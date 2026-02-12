@@ -1,8 +1,10 @@
 package org.example.examen_citoyennete.repository.question;
 
 import jakarta.transaction.Transactional;
+import org.example.examen_citoyennete.controller.dto.QuestionDto;
 import org.example.examen_citoyennete.model.*;
 import org.example.examen_citoyennete.repository.questionstranslation.QuestionTranslationRepository;
+import org.example.examen_citoyennete.service.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +24,8 @@ class QuestionRepositoryTest {
     @Autowired
     QuestionTranslationRepository translationRepository;
 
+    @Autowired
+    QuestionService questionService;
 
     /*
     Transactional permet de garder q1 managed durant toute la transaction
@@ -55,6 +59,14 @@ class QuestionRepositoryTest {
         questionTranslatedSaved = translationRepository.findAll();
         assertEquals(0, questionTranslatedSaved.size());
 
+    }
+
+    @Test
+    public void getRandomQuestion(){
+        List<Question> questions = repository.findByThemeAndLevel(Theme.T1, Level.L1).orElse(null);
+        Question q = questions.stream().findFirst().orElse(null);
+        QuestionDto dto = questionService.getDto(q, Language.FR);
+        var a = 1;
     }
 
 

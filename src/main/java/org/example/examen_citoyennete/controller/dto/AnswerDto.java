@@ -5,9 +5,9 @@ public class AnswerDto {
     private final Long id;
     private final String answer;
     private final String language;
-    private final boolean isCorrect;
+    private final Boolean isCorrect;
 
-    public AnswerDto(Long id, String answer, String language, boolean isCorrect){
+    public AnswerDto(Long id, String answer, String language, Boolean isCorrect){
         this.id = id;
         this.answer = answer;
         this.language = language;
