@@ -1,5 +1,6 @@
 package org.example.examen_citoyennete.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -48,7 +49,13 @@ public class Answer {
         return answersTranslations;
     }
 
+    @JsonProperty("isCorrect")
     public boolean isCorrect() {
         return isCorrect;
+    }
+
+    @JsonProperty("isCorrect")
+    public void setCorrect(boolean correct) {
+        isCorrect = correct;
     }
 }

@@ -1,0 +1,23 @@
+{
+  "component": {
+    "drop-down": {
+    }
+  },
+  "language": {
+    "fr": "français",
+    "en": "anglais",
+    "ru": "russe"
+  },
+  "level": {
+    "l1": "simple",
+    "l2": "moyen",
+    "l3": "dur"
+  },
+  "theme": {
+    "t1": "droits et devoirs",
+    "t2": "système institutionnel et politique",
+    "t3": "histoire, géographie et culture",
+    "t4": "principes et valeurs de la république",
+    "t5": "vivre dans la Société Française"
+  }
+}

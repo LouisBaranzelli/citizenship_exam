@@ -12,9 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.io.File;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -29,6 +30,10 @@ public class QuestionService {
     private final IQuestionTranslationRepository questionTranslationRepository;
 
     private final IAnswerTranslation answerTranslationRepository;
+
+    HashMap<Long, String> mapPathImages = new HashMap<>();
+    HashMap<Theme, List<String>> sentImage = new HashMap<>(); // t/path
+
 
 
     public QuestionService(IQuestionRepository questionRepository, IQuestionTranslationRepository questionTranslationRepository, IAnswerRepository answerRepository, IAnswerTranslation answerTranslationRepository){
@@ -115,7 +120,39 @@ public class QuestionService {
 
         List<AnswerDto> answersDto = answerTranslations.stream().map(answerTranslation ->
                 new AnswerDto(answerTranslation.getId(), answerTranslation.getLabelAnswer(), language.name(), answerTranslation.answer().isCorrect())).toList();
-        return new QuestionDto(question.getId(), questionTranslation.getLabelQuestion(), question.getTheme().name(), question.getLevel().name(), questionTranslation.language().name(), answersDto);
+
+        if (mapPathImages.get(question.getId()) == null){
+            mapPathImages.put(question.getId(), getRandomPathThemeImages(question.getTheme()));
+        }
+        String pathImage = mapPathImages.get(question.getId());
+
+        return new QuestionDto(question.getId(), questionTranslation.getLabelQuestion(), question.getTheme().name(), question.getLevel().name(), questionTranslation.language().name(), answersDto, pathImage);
+    }
+
+
+    public String getRandomPathThemeImages(Theme theme) {
+        File root = new File("src/main/resources/static/background-question/" + theme);
+        List<String> imagesAlreadySent = sentImage.computeIfAbsent(theme, t -> new ArrayList<>());
+
+        File[] filesArray = root.listFiles(File::isFile);
+        if (filesArray == null || filesArray.length == 0) {
+            throw new RuntimeException("Aucune image trouvée pour le thème " + theme);
+        }
+
+        List<File> availableFiles = Arrays.stream(filesArray)
+                .filter(f -> !imagesAlreadySent.contains("/background-question/" + theme + "/" + f.getName()))
+                .collect(Collectors.toList());
+
+        if (availableFiles.isEmpty()) {
+            imagesAlreadySent.clear();
+            availableFiles = Arrays.asList(filesArray);
+        }
+
+        File selectedFile = availableFiles.get(ThreadLocalRandom.current().nextInt(availableFiles.size()));
+        String path = "/background-question/" + theme + "/" + selectedFile.getName();
+        imagesAlreadySent.add(path);
+
+        return path;
     }
 
 }

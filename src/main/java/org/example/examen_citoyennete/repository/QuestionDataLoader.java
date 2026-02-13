@@ -1,21 +1,21 @@
 package org.example.examen_citoyennete.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.examen_citoyennete.model.Question;
-import org.example.examen_citoyennete.repository.question.IQuestionRepository;
 import org.example.examen_citoyennete.repository.question.QuestionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.ssl.SslProperties;
-import org.springframework.stereotype.Component;
-import tools.jackson.databind.ObjectMapper;
+
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Component
+
+
+//@Component
 public class QuestionDataLoader {
 
     public QuestionRepository questionRepository;
@@ -24,7 +24,7 @@ public class QuestionDataLoader {
 
     File folder = new File("C:\\Users\\baran\\Documents\\Louis - Synology\\Projet Programation\\database_citizenship_app");
 
-    public QuestionDataLoader(QuestionRepository questionRepository){
+    public QuestionDataLoader(QuestionRepository questionRepository) throws IOException {
         this.questionRepository = questionRepository;
         questionRepository.deleteAll();
         List<Question> questions = new ArrayList<>();
@@ -37,7 +37,7 @@ public class QuestionDataLoader {
     }
 
 
-    private List<Question> loadQuestions(File csvFile){
+    private List<Question> loadQuestions(File csvFile) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         List<Question> questions = List.of(mapper.readValue(csvFile, Question[].class));
         questions.forEach(q -> {

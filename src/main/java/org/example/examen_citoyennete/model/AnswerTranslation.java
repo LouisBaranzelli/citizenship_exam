@@ -1,15 +1,19 @@
 package org.example.examen_citoyennete.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
 public class AnswerTranslation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id")
     private Long id;
 
+    @JsonProperty("language")
     private Language language;
 
+    @JsonProperty("labelAnswer")
     private String labelAnswer;
 
     public void setId(Long id) {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +19,7 @@ class QuestionDataLoaderTest {
     private QuestionRepository questionRepository;
 
     @Test
-    public void test(){
+    public void test() throws IOException {
         QuestionDataLoader questionDataLoader = new QuestionDataLoader(questionRepository);
     }
 }

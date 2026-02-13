@@ -7,17 +7,19 @@ public class QuestionDto {
     private final String question;
     private final String theme;
     private final String level;
+    private final String pathImage;
     private final String language;
     private final List<AnswerDto> answers;
 
 
-    public QuestionDto(long id, String question, String theme, String level, String language, List<AnswerDto> answers) {
+    public QuestionDto(long id, String question, String theme, String level, String language, List<AnswerDto> answers, String pathImage) {
         this.id = id;
         this.question = question;
         this.theme = theme;
         this.level = level;
         this.language = language;
         this.answers = answers;
+        this.pathImage = pathImage;
     }
 
     public long getId() {
@@ -42,5 +44,9 @@ public class QuestionDto {
 
     public String getLanguage() {
         return language;
+    }
+
+    public String getPathImage() {
+        return pathImage;
     }
 }

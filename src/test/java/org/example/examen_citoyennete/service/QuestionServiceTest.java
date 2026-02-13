@@ -32,4 +32,9 @@ class QuestionServiceTest {
         assertThrowsExactly(QuestionNotFoundException.class, () ->questionService.getQuestion(0L, Language.RU));
 
     }
+
+    @Test
+    void getRandomPathThemeImages() {
+        assertNotEquals(null, questionService.getRandomPathThemeImages(Theme.T1));
+    }
 }

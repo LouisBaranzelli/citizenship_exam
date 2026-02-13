@@ -1,0 +1,23 @@
+{
+  "component": {
+    "drop-down": {
+    }
+  },
+  "level": {
+    "l1": "easy",
+    "l2": "medium",
+    "l3": "hard"
+  },
+  "language": {
+    "fr": "French",
+    "en": "English",
+    "ru": "Russian"
+  },
+  "theme": {
+    "t1": "Rights and Duties",
+    "t2": "Institutional and Political System",
+    "t3": "History, Geography, and Culture",
+    "t4": "Principles and Values of the Republic",
+    "t5": "Living in French Society"
+  }
+}
